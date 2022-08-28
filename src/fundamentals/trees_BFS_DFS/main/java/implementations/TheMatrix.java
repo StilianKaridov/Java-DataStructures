@@ -18,7 +18,42 @@ public class TheMatrix {
     }
 
     public void solve() {
+        ArrayDeque<Integer> row = new ArrayDeque<>();
+        ArrayDeque<Integer> col = new ArrayDeque<>();
 
+        row.offer(startRow);
+        col.offer(startCol);
+        this.matrix[this.startRow][this.startCol] = fillChar;
+
+
+        while (!row.isEmpty()) {
+            Integer currentRow = row.poll();
+            Integer currentCol = col.poll();
+
+            if (isInBounds(currentRow + 1, currentCol) && matrix[currentRow + 1][currentCol] == startChar) {
+                matrix[currentRow + 1][currentCol] = fillChar;
+                row.offer(currentRow + 1);
+                col.offer(currentCol);
+            }
+
+            if (isInBounds(currentRow, currentCol + 1) && matrix[currentRow][currentCol + 1] == startChar) {
+                matrix[currentRow][currentCol + 1] = fillChar;
+                row.offer(currentRow);
+                col.offer(currentCol + 1);
+            }
+
+            if (isInBounds(currentRow - 1, currentCol) && matrix[currentRow - 1][currentCol] == startChar) {
+                matrix[currentRow - 1][currentCol] = fillChar;
+                row.offer(currentRow - 1);
+                col.offer(currentCol);
+            }
+
+            if (isInBounds(currentRow, currentCol - 1) && matrix[currentRow][currentCol - 1] == startChar) {
+                matrix[currentRow][currentCol - 1] = fillChar;
+                row.offer(currentRow);
+                col.offer(currentCol - 1);
+            }
+        }
     }
 
     public String toOutputString() {
@@ -32,5 +67,10 @@ public class TheMatrix {
         }
 
         return sb.toString().trim();
+    }
+
+    private boolean isInBounds(int row, int col) {
+        return row >= 0 && row < matrix.length
+                && col >= 0 && col < matrix[row].length;
     }
 }

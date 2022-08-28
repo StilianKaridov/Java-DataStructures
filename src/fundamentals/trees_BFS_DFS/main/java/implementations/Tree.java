@@ -2,10 +2,7 @@ package fundamentals.trees_BFS_DFS.main.java.implementations;
 
 import fundamentals.trees_BFS_DFS.main.java.interfaces.AbstractTree;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Tree<E> implements AbstractTree<E> {
 
@@ -45,9 +42,21 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public String getAsString() {
-        Tree<E> root = getRoot();
+        return printTree(this, 0, new StringBuilder()).trim();
+    }
 
-        return null;
+    private String printTree(Tree<E> current, int indent, StringBuilder builder) {
+
+        builder.append(String.join("",
+                        Collections.nCopies(indent * 2, " ")))
+                .append(current.value)
+                .append("\n");
+
+        for (Tree<E> child : current.children) {
+            printTree(child, indent + 1, builder);
+        }
+
+        return builder.toString();
     }
 
     @Override
@@ -148,7 +157,6 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public List<Tree<E>> subTreesWithGivenSum(int sum) {
-        //TODO 80/100, think of a edge case
         List<Tree<E>> result = new ArrayList<>();
 
         ArrayDeque<Tree<E>> stack = new ArrayDeque<>();
@@ -162,6 +170,13 @@ public class Tree<E> implements AbstractTree<E> {
             for (Tree<E> child : current.children) {
                 stack.push(child);
                 currentSum += (Integer) child.value;
+
+                if (child.children.size() > 0) {
+                    for (Tree<E> eTree : child.children) {
+                        currentSum += (Integer) eTree.value;
+                    }
+                }
+
             }
 
             if (currentSum == sum) {
@@ -171,26 +186,6 @@ public class Tree<E> implements AbstractTree<E> {
 
         Collections.reverse(result);
         return result;
-    }
-
-    private Tree<E> getRoot() {
-        ArrayDeque<Tree<E>> queue = new ArrayDeque<>();
-
-        queue.offer(this);
-
-        while (!queue.isEmpty()) {
-            Tree<E> current = queue.poll();
-
-            if (current.parent == null) {
-                return current;
-            }
-
-            for (Tree<E> child : current.children) {
-                queue.offer(child);
-            }
-        }
-
-        return null;
     }
 
     private List<Tree<E>> traverseWithBfs() {

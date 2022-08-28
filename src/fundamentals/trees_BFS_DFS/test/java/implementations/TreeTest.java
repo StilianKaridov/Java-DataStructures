@@ -49,14 +49,14 @@ public class TreeTest {
         TreeFactory treeFactory = new TreeFactory();
         Tree<Integer> tree = treeFactory.createTreeFromStrings(input);
 
-        assertEquals("7\r\n" +
-                "  19\r\n" +
-                "    1\r\n" +
-                "    12\r\n" +
-                "    31\r\n" +
-                "  21\r\n" +
-                "  14\r\n" +
-                "    23\r\n" +
+        assertEquals("7\n" +
+                "  19\n" +
+                "    1\n" +
+                "    12\n" +
+                "    31\n" +
+                "  21\n" +
+                "  14\n" +
+                "    23\n" +
                 "    6", tree.getAsString());
     }
 
@@ -192,5 +192,25 @@ public class TreeTest {
         assertTrue(asString.contains("14"));
         assertTrue(asString.contains("23"));
         assertTrue(asString.contains("6"));
+    }
+
+    @Test
+    public void testTreesWithGivenSum2(){
+        String[] input = {
+                "0 1",
+                "0 2",
+                "1 3"
+        };
+
+        TreeFactory treeFactory = new TreeFactory();
+        Tree<Integer> tree = treeFactory.createTreeFromStrings(input);
+
+        List<Tree<Integer>> trees = tree.subTreesWithGivenSum(6);
+
+        String asString = trees.get(0).getAsString();
+        assertTrue(asString.contains("0"));
+        assertTrue(asString.contains("1"));
+        assertTrue(asString.contains("2"));
+        assertTrue(asString.contains("3"));
     }
 }
