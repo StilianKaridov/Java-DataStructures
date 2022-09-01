@@ -15,7 +15,7 @@ public class BinarySearchTreeTest {
 
     @Before
     public void setUp() {
-        this.bst = new BinarySearchTree<>(new BinarySearchTree.Node<>(5));
+        this.bst = new BinarySearchTree<>(5);
         bst.insert(2);
         bst.insert(6);
         bst.insert(4);
